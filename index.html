@@ -4,8 +4,12 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Zaky Projects</title>
+  <title>Zakria Khan | Selected Works & Software Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Curated software systems, web applications, and developer utilities engineered by Zakria Khan Muhammadzai.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -16,22 +20,226 @@
 
   <!-- Content wrapper, sits on top of particles -->
   <div class="content">
-    <header>🔥 Zaky Projects Hub</header>
+    <header class="hero">
+      <div class="hero-badge">
+        <span class="status-dot"></span>
+        <span>Portfolio &bull; v2.0</span>
+      </div>
+      <h1 class="hero-title">Selected Works <span class="title-accent">&amp; Experiments.</span></h1>
+      <p class="hero-desc">A curated index of software applications, developer utilities, and interactive experiments engineered by Zakria Khan Muhammadzai.</p>
+      <div class="hero-links">
+        <a href="https://zakyprojects.github.io/aboutMe/" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-primary">About Me &rarr;</a>
+      </div>
+    </header>
 
-    <div class="projects">
-      <a href="https://zakyprojects.github.io/aboutMe/" target="_blank">✍️ About Me</a>
-      <a href="https://zakyprojects.github.io/todo/" target="_blank">✅ Todo Web - Simple</a>
-      <a href="https://zakyprojects.github.io/todo-2/" target="_blank">✅ Todo Web - Advanced</a>
-      <a href="https://zakyprojects.github.io/finance-tracker/" target="_blank">📈 Finance Tracker</a>
-      <a href="https://zakyprojects.github.io/weather/" target="_blank">🌤️ Weather App</a>
-      <a href="https://zakyprojects.github.io/Random-Password-Generator/" target="_blank">🔑 Random Password Generator</a>
-      <a href="https://zakyprojects.github.io/quotes-generator/" target="_blank">💬 Quote of the Day</a>
-      <a href="https://zakyprojects.github.io/qr-code-generator/" target="_blank">📷 QR Code Generator</a>
-      <a href="https://zakyprojects.github.io/ora-frontened/" target="_blank">🤖 Meet Zaky's Personal AI Assistant</a>
-      <a href="#">🚧 More Projects Coming Soon...</a>
-    </div>
+    <main class="projects-grid">
+      <!-- Project 1: AI Assistant (UI Showcase) -->
+      <a href="https://zakyprojects.github.io/ora-frontened/" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="card-header">
+          <span class="card-category">AI / Interface</span>
+          <div class="card-actions">
+            <span class="card-badge badge-featured">UI Showcase</span>
+            <span class="card-arrow">&#x2197;</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">🤖</span> Ora - AI Assistant</h2>
+          <p class="card-desc">Interactive conversational interface and sleek frontend UI showcase designed for a personal AI assistant.</p>
+          <div class="card-disclaimer">
+            <span class="card-disclaimer-icon">⚠️</span>
+            <span><strong>OFFLINE / NOT WORKING:</strong> Backend removed. This is strictly a UI/Design Showcase.</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">UI Showcase</span>
+          <span class="card-tag">Conversational UI</span>
+          <span class="card-tag">Frontend</span>
+        </div>
+      </a>
 
-    <footer>Built with ❤️ by Zakria Khan Muhammadzai</footer>
+      <!-- Project 2: Finance Tracker -->
+      <a href="https://zakyprojects.github.io/finance-tracker/" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="card-header">
+          <span class="card-category">Web Application</span>
+          <div class="card-actions">
+            <span class="card-badge badge-live">Shipped</span>
+            <span class="card-arrow">&#x2197;</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">📈</span> Finance Tracker</h2>
+          <p class="card-desc">Interactive personal ledger and financial analytics dashboard for tracking income, expenses, and cash flow.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">Analytics</span>
+          <span class="card-tag">Charts</span>
+          <span class="card-tag">Vanilla JS</span>
+        </div>
+      </a>
+
+      <!-- Project 3: Todo Web Advanced -->
+      <a href="https://zakyprojects.github.io/todo-2/" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="card-header">
+          <span class="card-category">Productivity</span>
+          <div class="card-actions">
+            <span class="card-badge badge-live">Shipped</span>
+            <span class="card-arrow">&#x2197;</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">✅</span> Todo Web - Advanced</h2>
+          <p class="card-desc">Modern productivity suite featuring task categorization, state persistence, deadline tracking, and filtering.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">Local Storage</span>
+          <span class="card-tag">State Mgmt</span>
+          <span class="card-tag">Interactive</span>
+        </div>
+      </a>
+
+      <!-- Project 4: Weather App -->
+      <a href="https://zakyprojects.github.io/weather/" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="card-header">
+          <span class="card-category">API &amp; Utility</span>
+          <div class="card-actions">
+            <span class="card-badge badge-live">Shipped</span>
+            <span class="card-arrow">&#x2197;</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">🌤️</span> Weather App</h2>
+          <p class="card-desc">Real-time meteorological forecast application delivering live temperature, humidity, and atmospheric data.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">REST API</span>
+          <span class="card-tag">Async/Await</span>
+          <span class="card-tag">Geolocation</span>
+        </div>
+      </a>
+
+      <!-- Project 5: Random Password Generator -->
+      <a href="https://zakyprojects.github.io/Random-Password-Generator/" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="card-header">
+          <span class="card-category">Security Tool</span>
+          <div class="card-actions">
+            <span class="card-badge badge-live">Shipped</span>
+            <span class="card-arrow">&#x2197;</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">🔑</span> Password Generator</h2>
+          <p class="card-desc">High-entropy cryptographic password generation engine with customizable complexity and instant clipboard copy.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">Security</span>
+          <span class="card-tag">Algorithms</span>
+          <span class="card-tag">Clipboard API</span>
+        </div>
+      </a>
+
+      <!-- Project 6: QR Code Generator -->
+      <a href="https://zakyprojects.github.io/qr-code-generator/" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="card-header">
+          <span class="card-category">Utility Tool</span>
+          <div class="card-actions">
+            <span class="card-badge badge-live">Shipped</span>
+            <span class="card-arrow">&#x2197;</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">📷</span> QR Code Generator</h2>
+          <p class="card-desc">Client-side dynamic matrix barcode encoder for rapid sharing of URLs, text data, and contact cards.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">Encoding</span>
+          <span class="card-tag">Canvas API</span>
+          <span class="card-tag">Export</span>
+        </div>
+      </a>
+
+      <!-- Project 7: Quote of the Day -->
+      <a href="https://zakyprojects.github.io/quotes-generator/" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="card-header">
+          <span class="card-category">Lifestyle &amp; Content</span>
+          <div class="card-actions">
+            <span class="card-badge badge-live">Shipped</span>
+            <span class="card-arrow">&#x2197;</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">💬</span> Quote of the Day</h2>
+          <p class="card-desc">Curated daily engine delivering inspirational thoughts, philosophical insights, and wisdom snippets.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">Quotes API</span>
+          <span class="card-tag">UI Animation</span>
+        </div>
+      </a>
+
+      <!-- Project 8: Todo Web Simple -->
+      <a href="https://zakyprojects.github.io/todo/" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="card-header">
+          <span class="card-category">Productivity</span>
+          <div class="card-actions">
+            <span class="card-badge badge-live">Shipped</span>
+            <span class="card-arrow">&#x2197;</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">📝</span> Todo Web - Simple</h2>
+          <p class="card-desc">Distraction-free, rapid-entry checklist application built for lightweight daily task management.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">Minimalist</span>
+          <span class="card-tag">Fast UI</span>
+          <span class="card-tag">DOM API</span>
+        </div>
+      </a>
+
+      <!-- Project 9: About Me -->
+      <a href="https://zakyprojects.github.io/aboutMe/" target="_blank" rel="noopener noreferrer" class="project-card">
+        <div class="card-header">
+          <span class="card-category">Profile</span>
+          <div class="card-actions">
+            <span class="card-badge badge-live">Profile</span>
+            <span class="card-arrow">&#x2197;</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">✍️</span> About Me</h2>
+          <p class="card-desc">Comprehensive developer profile, background, skillsets, philosophy, and engineering journey.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">Biography</span>
+          <span class="card-tag">Skills</span>
+          <span class="card-tag">Experience</span>
+        </div>
+      </a>
+
+      <!-- Project 10: Upcoming / Labs -->
+      <div class="project-card card-disabled">
+        <div class="card-header">
+          <span class="card-category">Laboratory</span>
+          <div class="card-actions">
+            <span class="card-badge badge-wip">WIP / Labs</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title"><span class="card-icon">🚧</span> More Projects Coming Soon</h2>
+          <p class="card-desc">Currently experimenting with WebGL shaders, distributed system tools, and next-generation full-stack apps.</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">WebGL</span>
+          <span class="card-tag">AI Agents</span>
+          <span class="card-tag">Experimental</span>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p class="footer-credit">Designed &amp; Engineered by <strong>Zakria Muhammadzai</strong></p>
+      <p class="footer-meta">&copy; 2026 <a href="https://zakyprojects.github.io/" class="footer-link">zakyprojects.github.io/homepage</a> &bull; All rights reserved.</p>
+    </footer>
   </div>
 
   <script>
@@ -141,6 +349,128 @@
 
       // first run
       init();
+    })();
+  </script>
+
+  <!-- Custom Tech Cursor Elements -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- Custom Lerp Cursor Logic -->
+  <script>
+    (function () {
+      // Enable only for desktop/devices supporting fine pointer & hover
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        return;
+      }
+
+      const dot = document.getElementById('cursor-dot');
+      const ring = document.getElementById('cursor-ring');
+      if (!dot || !ring) return;
+
+      let mouseX = -100, mouseY = -100;
+      let ringX = -100, ringY = -100;
+      let isVisible = false;
+      const lerpFactor = 0.45;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        if (!isVisible) {
+          isVisible = true;
+          dot.style.opacity = '1';
+          ring.style.opacity = '1';
+          ringX = mouseX;
+          ringY = mouseY;
+        }
+
+        dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      });
+
+      window.addEventListener('mouseleave', () => {
+        dot.style.opacity = '0';
+        ring.style.opacity = '0';
+        isVisible = false;
+      });
+
+      window.addEventListener('mouseenter', () => {
+        if (mouseX > 0 && mouseY > 0) {
+          dot.style.opacity = '1';
+          ring.style.opacity = '1';
+          isVisible = true;
+        }
+      });
+
+      // Hover expansion on interactive elements
+      document.addEventListener('mouseover', (e) => {
+        if (e.target.closest('a, button, .project-card, [role="button"], input')) {
+          ring.classList.add('cursor-hover');
+          dot.classList.add('cursor-hover');
+        }
+      });
+
+      document.addEventListener('mouseout', (e) => {
+        if (e.target.closest('a, button, .project-card, [role="button"], input')) {
+          ring.classList.remove('cursor-hover');
+          dot.classList.remove('cursor-hover');
+        }
+      });
+
+      // Smooth RAF Lerp loop for trailing ring
+      function render() {
+        if (isVisible) {
+          ringX += (mouseX - ringX) * lerpFactor;
+          ringY += (mouseY - ringY) * lerpFactor;
+          ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+        }
+        requestAnimationFrame(render);
+      }
+
+      requestAnimationFrame(render);
+    })();
+  </script>
+
+  <!-- Scroll Reveal Intersection Observer with Stagger (Continuous Replay) -->
+  <script>
+    (function () {
+      const revealElements = document.querySelectorAll('.hero, .project-card');
+      if (!revealElements.length) return;
+
+      // Fallback for browsers lacking IntersectionObserver support
+      if (!('IntersectionObserver' in window)) {
+        revealElements.forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+
+      let batchCount = 0;
+      let batchResetTimer = null;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target;
+          if (entry.isIntersecting) {
+            const delay = batchCount * 80;
+            batchCount++;
+
+            clearTimeout(batchResetTimer);
+            batchResetTimer = setTimeout(() => {
+              batchCount = 0;
+            }, 100);
+
+            setTimeout(() => {
+              el.classList.add('is-visible');
+            }, delay);
+          } else {
+            el.classList.remove('is-visible');
+          }
+        });
+      }, {
+        threshold: 0.05,
+        rootMargin: '0px 0px -5% 0px'
+      });
+
+      revealElements.forEach(el => observer.observe(el));
     })();
   </script>
 
