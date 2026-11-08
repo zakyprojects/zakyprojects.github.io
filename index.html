@@ -6,8 +6,7 @@
   <title>Zakria Khan | Web Developer: React, TypeScript, Supabase</title>
   <meta name="description" content="Zakria Khan is a web developer from Pakistan who builds fast, mobile-friendly web apps and websites with React, TypeScript and Supabase. Open to remote work.">
   <link rel="canonical" href="https://zakyprojects.github.io/">
-  <meta name="theme-color" content="#121210" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f6f3ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#f6f3ea">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://zakyprojects.github.io/">
@@ -21,9 +20,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="favicon.ico">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 
   <!-- Apply the saved theme before paint so the page never flashes the wrong colours. -->
@@ -31,7 +28,7 @@
     (function () {
       try {
         var t = localStorage.getItem('theme');
-        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+        if (t === 'dark') document.documentElement.dataset.theme = 'dark';
       } catch (e) {}
     })();
   </script>
@@ -56,11 +53,12 @@
 
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"></div>
 
   <header class="site-header" id="top">
     <div class="wrap header-inner">
       <a class="brand" href="#top" aria-label="Zakria Khan, back to top">
-        <span class="brand-mark" aria-hidden="true">ZK</span>
+        <img class="brand-mark" src="avatar-96.webp" width="34" height="34" alt="" aria-hidden="true">
         <span class="brand-name">Zakria Khan</span>
       </a>
 
@@ -88,9 +86,9 @@
     <!-- Hero -->
     <section class="hero wrap" aria-labelledby="hero-title">
       <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Open to remote jobs and freelance work</p>
-      <h1 class="hero-title" id="hero-title">
-        I build web apps<br>
-        <span class="accent">people use every day.</span>
+      <h1 class="hero-title" id="hero-title" aria-label="I build web apps people use every day.">
+        <span aria-hidden="true"><span class="word" style="--i:0">I</span> <span class="word" style="--i:1">build</span> <span class="word" style="--i:2">web</span> <span class="word" style="--i:3">apps</span><br>
+        <span class="accent serif"><span class="word" style="--i:4">people</span> <span class="word" style="--i:5">use</span> <span class="word" style="--i:6">every</span> <span class="word" style="--i:7">day.</span></span></span>
       </h1>
       <p class="hero-lead">
         I'm Zakria, a web developer and CS student from Pakistan. I work with React, TypeScript and Supabase,
@@ -117,7 +115,7 @@
 
     <!-- 01 Work -->
     <section class="section wrap" id="work" aria-labelledby="work-title">
-      <div class="section-head">
+      <div class="section-head" data-n="01">
         <p class="section-num">01 / Work</p>
         <h2 class="section-title" id="work-title">Selected work</h2>
       </div>
@@ -221,7 +219,7 @@
 
     <!-- 02 About -->
     <section class="section wrap" id="about" aria-labelledby="about-title">
-      <div class="section-head">
+      <div class="section-head" data-n="02">
         <p class="section-num">02 / About</p>
         <h2 class="section-title" id="about-title">About me</h2>
       </div>
@@ -275,17 +273,26 @@
               <span>Harvard University · Completed</span>
             </li>
           </ul>
-          <a class="cert" href="cs50x.webp" target="_blank" rel="noopener">
-            <img src="cs50x.webp" width="1200" height="848" alt="Harvard CS50x certificate for Zakria Khan" loading="lazy" decoding="async">
-            <span>View CS50x certificate <span aria-hidden="true">↗</span></span>
-          </a>
         </div>
       </div>
+
+      <article class="cert">
+        <a class="cert-img" href="cs50x.webp" target="_blank" rel="noopener" aria-label="Open the CS50x certificate full size">
+          <img src="cs50x.webp" width="1200" height="848" alt="Harvard CS50x certificate for Zakria Khan" loading="lazy" decoding="async">
+        </a>
+        <div class="cert-body">
+          <p class="section-num">Certificate</p>
+          <h3 class="cert-title">CS50x: Introduction to Computer Science</h3>
+          <p class="cert-issuer">Harvard University · David J. Malan · 2025</p>
+          <p>Harvard's well-known intro to computer science: C, Python, SQL, algorithms, data structures and web basics, with weekly problem sets and a final project.</p>
+          <a class="btn btn-ghost btn-sm" href="cs50x.webp" target="_blank" rel="noopener">View full size <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
     </section>
 
     <!-- 03 Services -->
     <section class="section wrap" id="services" aria-labelledby="services-title">
-      <div class="section-head">
+      <div class="section-head" data-n="03">
         <p class="section-num">03 / Services</p>
         <h2 class="section-title" id="services-title">How I can help</h2>
       </div>
@@ -312,7 +319,7 @@
     <!-- 04 Contact -->
     <section class="section wrap contact" id="contact" aria-labelledby="contact-title">
       <p class="section-num">04 / Contact</p>
-      <h2 class="contact-title" id="contact-title">Have something to build?<br><span class="accent">Let's talk.</span></h2>
+      <h2 class="contact-title" id="contact-title">Have something to build?<br><span class="accent serif">Let's talk.</span></h2>
       <p class="contact-lead">Send me a short message about your project or role.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="mailto:mzakriakhan55@gmail.com?subject=Hello%20Zakria">Email me</a>

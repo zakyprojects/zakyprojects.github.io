@@ -3,16 +3,18 @@
   var root = document.documentElement;
   root.classList.add('js');
 
-  // Theme: follow the system until the visitor picks one, then remember the pick.
+  // Theme: light by default; dark only when the visitor picks it (remembered).
   var themeBtn = document.querySelector('.theme-toggle');
-  function currentTheme() {
-    if (root.dataset.theme) return root.dataset.theme;
-    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  function applyTheme(t) {
+    if (t === 'dark') root.dataset.theme = 'dark'; else delete root.dataset.theme;
+    if (themeMeta) themeMeta.content = t === 'dark' ? '#121210' : '#f6f3ea';
   }
+  applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
   if (themeBtn) {
     themeBtn.addEventListener('click', function () {
-      var next = currentTheme() === 'dark' ? 'light' : 'dark';
-      root.dataset.theme = next;
+      var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
       try { localStorage.setItem('theme', next); } catch (e) {}
     });
   }
@@ -39,18 +41,49 @@
     });
   }
 
-  // Reveal sections once as they scroll into view.
-  var items = document.querySelectorAll('.section-head, .case, .card, .about, .panel, .contact-title');
+  // Reveal on scroll, every time: an element fades in when it enters the screen and resets when it
+  // leaves, so it animates again from whichever side it comes back (below when scrolling down, above when up).
+  var items = document.querySelectorAll('.section-head, .case, .card, .about, .panel, .cert, .contact-title, .more');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
+        var el = entry.target;
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
+          el.classList.add('is-visible');
+        } else {
+          el.classList.remove('is-visible');
+          // Left through the top: next time it comes back from above.
+          el.classList.toggle('from-above', entry.boundingClientRect.top < 0);
         }
       });
-    }, { rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0.08 });
     items.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+  }
+
+  // Pointer spotlight on cards (desktop only).
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.card, .case').forEach(function (el) {
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
+
+  // Scroll progress line.
+  var bar = document.querySelector('.progress');
+  if (bar) {
+    var ticking = false;
+    var update = function () {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = 'scaleX(' + (max > 0 ? window.scrollY / max : 0) + ')';
+      ticking = false;
+    };
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
   }
 
   var year = document.getElementById('year');
