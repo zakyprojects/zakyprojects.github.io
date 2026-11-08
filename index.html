@@ -27,7 +27,9 @@
   <script>
     (function () {
       try {
+        // Saved choice wins; otherwise follow the device/browser theme.
         var t = localStorage.getItem('theme');
+        if (t !== 'dark' && t !== 'light') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         if (t === 'dark') document.documentElement.dataset.theme = 'dark';
       } catch (e) {}
     })();

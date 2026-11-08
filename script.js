@@ -3,7 +3,7 @@
   var root = document.documentElement;
   root.classList.add('js');
 
-  // Theme: light by default; dark only when the visitor picks it (remembered).
+  // Theme: follows the device/browser theme until the visitor picks one (remembered).
   var themeBtn = document.querySelector('.theme-toggle');
   var themeMeta = document.querySelector('meta[name="theme-color"]');
   function applyTheme(t) {
@@ -11,6 +11,12 @@
     if (themeMeta) themeMeta.content = t === 'dark' ? '#121210' : '#f6f3ea';
   }
   applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
+  var systemDark = matchMedia('(prefers-color-scheme: dark)');
+  systemDark.addEventListener('change', function (e) {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (err) {}
+    if (saved !== 'dark' && saved !== 'light') applyTheme(e.matches ? 'dark' : 'light');
+  });
   if (themeBtn) {
     themeBtn.addEventListener('click', function () {
       var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
