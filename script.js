@@ -71,25 +71,51 @@
     });
   }
 
-  // Background follows the mouse (smoothed). Desktop only, skipped for reduced motion.
+  // Ripples on the background: moving the mouse leaves soft rings that grow and fade, like water.
+  // A click makes a bigger one. Desktop only, skipped for reduced motion. The loop sleeps when idle.
   var fx = document.querySelector('.bg-fx');
-  if (fx && window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
-    var tx = innerWidth / 2, ty = innerHeight * 0.4, cx = tx, cy = ty, running = false;
-    var step = function () {
-      cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
-      fx.style.setProperty('--x', cx + 'px');
-      fx.style.setProperty('--y', cy + 'px');
-      // Grid drifts a little against the mouse for a sense of depth.
-      fx.style.setProperty('--px', ((innerWidth / 2 - cx) * 0.02) + 'px');
-      fx.style.setProperty('--py', ((innerHeight / 2 - cy) * 0.02) + 'px');
-      if (Math.abs(tx - cx) > 0.3 || Math.abs(ty - cy) > 0.3) requestAnimationFrame(step); else running = false;
+  if (fx && fx.getContext && window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
+    var ctx = fx.getContext('2d');
+    var ripples = [], lastX = -999, lastY = -999, raf = 0, dpr = 1, color = '#047857';
+    var resize = function () {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      fx.width = innerWidth * dpr; fx.height = innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    var readColor = function () { color = getComputedStyle(root).getPropertyValue('--accent').trim() || color; };
+    resize(); readColor();
+    window.addEventListener('resize', resize);
+    new MutationObserver(readColor).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+
+    var add = function (x, y, size) {
+      ripples.push({ x: x, y: y, t: performance.now(), max: size, life: size > 100 ? 1400 : 1000 });
+      if (ripples.length > 40) ripples.shift();
+      if (!raf) raf = requestAnimationFrame(draw);
+    };
+    var draw = function (now) {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      ctx.strokeStyle = color;
+      ripples = ripples.filter(function (r) { return now - r.t < r.life; });
+      ripples.forEach(function (r) {
+        var p = (now - r.t) / r.life;              // 0 → 1
+        var ease = 1 - Math.pow(1 - p, 3);          // fast start, slow end
+        var fade = (1 - p) * 0.35;
+        for (var k = 0; k < 2; k++) {               // two rings per ripple, like water
+          var rad = r.max * Math.max(0, ease - k * 0.18);
+          if (rad <= 0) continue;
+          ctx.globalAlpha = fade * (k ? 0.5 : 1);
+          ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.arc(r.x, r.y, rad, 0, Math.PI * 2); ctx.stroke();
+        }
+      });
+      ctx.globalAlpha = 1;
+      raf = ripples.length ? requestAnimationFrame(draw) : 0;
     };
     window.addEventListener('pointermove', function (e) {
-      tx = e.clientX; ty = e.clientY;
-      fx.classList.add('is-on');
-      if (!running) { running = true; requestAnimationFrame(step); }
+      var dx = e.clientX - lastX, dy = e.clientY - lastY;
+      if (dx * dx + dy * dy > 70 * 70) { lastX = e.clientX; lastY = e.clientY; add(lastX, lastY, 70); }
     }, { passive: true });
-    document.documentElement.addEventListener('pointerleave', function () { fx.classList.remove('is-on'); });
+    window.addEventListener('pointerdown', function (e) { add(e.clientX, e.clientY, 160); }, { passive: true });
   }
 
   // Scroll progress line.
