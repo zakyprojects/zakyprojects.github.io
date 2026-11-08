@@ -71,6 +71,27 @@
     });
   }
 
+  // Background follows the mouse (smoothed). Desktop only, skipped for reduced motion.
+  var fx = document.querySelector('.bg-fx');
+  if (fx && window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
+    var tx = innerWidth / 2, ty = innerHeight * 0.4, cx = tx, cy = ty, running = false;
+    var step = function () {
+      cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
+      fx.style.setProperty('--x', cx + 'px');
+      fx.style.setProperty('--y', cy + 'px');
+      // Grid drifts a little against the mouse for a sense of depth.
+      fx.style.setProperty('--px', ((innerWidth / 2 - cx) * 0.02) + 'px');
+      fx.style.setProperty('--py', ((innerHeight / 2 - cy) * 0.02) + 'px');
+      if (Math.abs(tx - cx) > 0.3 || Math.abs(ty - cy) > 0.3) requestAnimationFrame(step); else running = false;
+    };
+    window.addEventListener('pointermove', function (e) {
+      tx = e.clientX; ty = e.clientY;
+      fx.classList.add('is-on');
+      if (!running) { running = true; requestAnimationFrame(step); }
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', function () { fx.classList.remove('is-on'); });
+  }
+
   // Scroll progress line.
   var bar = document.querySelector('.progress');
   if (bar) {
