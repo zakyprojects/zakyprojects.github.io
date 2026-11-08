@@ -78,7 +78,7 @@
   var fx = document.querySelector('.bg-fx');
   if (fx && fx.getContext && window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
     var ctx = fx.getContext('2d');
-    var GAP = 24, DAMP = 0.955, PUSH = 7;
+    var GAP = 24, DAMP = 0.975, C2 = 0.1, PUSH = 2.2;
     var cols = 0, rows = 0, cur = null, prev = null, raf = 0, dpr = 1, dotColor = '', waveColor = '';
     var lastX = null, lastY = null;
     root.classList.add('has-water');
@@ -114,7 +114,9 @@
       for (var y = 1; y < rows - 1; y++) {
         for (var x = 1; x < cols - 1; x++) {
           var k = y * cols + x;
-          var v = ((cur[k - 1] + cur[k + 1] + cur[k - cols] + cur[k + cols]) / 2 - prev[k]) * DAMP;
+          // Slow, soft waves: low wave speed (C2) so the wake spreads gently instead of racing out.
+          var h0 = cur[k];
+          var v = (2 * h0 - prev[k] + C2 * (cur[k - 1] + cur[k + 1] + cur[k - cols] + cur[k + cols] - 4 * h0)) * DAMP;
           prev[k] = v;
           energy += v < 0 ? -v : v;
         }
@@ -129,10 +131,10 @@
         for (var x = 1; x < cols - 1; x++) {
           var k = y * cols + x, h = cur[k];
           // The slope of the surface bends each dot, like light through water.
-          var px = x * GAP + (cur[k + 1] - cur[k - 1]) * 1.6;
-          var py = y * GAP + (cur[k + cols] - cur[k - cols]) * 1.6;
+          var px = x * GAP + (cur[k + 1] - cur[k - 1]) * 0.9;
+          var py = y * GAP + (cur[k + cols] - cur[k - cols]) * 0.9;
           var a = h < 0 ? -h : h;
-          (a > 0.6 ? moving : calm).push(px, py, a);
+          (a > 0.8 ? moving : calm).push(px, py, a);
         }
       }
       ctx.fillStyle = dotColor; ctx.globalAlpha = 1;
@@ -141,16 +143,16 @@
       ctx.fill();
       ctx.fillStyle = waveColor;
       for (var m = 0; m < moving.length; m += 3) {
-        var s = Math.min(moving[m + 2] / 14, 1);
-        ctx.globalAlpha = 0.25 + s * 0.6;
-        ctx.beginPath(); ctx.arc(moving[m], moving[m + 1], 1.3 + s * 1.6, 0, 6.2832); ctx.fill();
+        var s = Math.min(moving[m + 2] / 10, 1);
+        ctx.globalAlpha = 0.15 + s * 0.4;
+        ctx.beginPath(); ctx.arc(moving[m], moving[m + 1], 1.3 + s * 0.9, 0, 6.2832); ctx.fill();
       }
       ctx.globalAlpha = 1;
     };
     var tick = function () {
       var energy = step();
       render();
-      raf = energy > 0.5 ? requestAnimationFrame(tick) : 0;
+      raf = energy > 0.8 ? requestAnimationFrame(tick) : 0;
       if (!raf) { cur.fill(0); prev.fill(0); render(); }
     };
 
@@ -159,11 +161,11 @@
     new MutationObserver(function () { readColors(); render(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
     window.addEventListener('pointermove', function (e) {
       // Faster movement makes a bigger wake, like a fish swimming quicker.
-      var speed = lastX === null ? 0 : Math.min(Math.hypot(e.clientX - lastX, e.clientY - lastY), 60);
+      var speed = lastX === null ? 0 : Math.min(Math.hypot(e.clientX - lastX, e.clientY - lastY), 40);
       lastX = e.clientX; lastY = e.clientY;
-      disturb(e.clientX, e.clientY, 1, PUSH + speed * 0.35);
+      disturb(e.clientX, e.clientY, 1, PUSH + speed * 0.06);
     }, { passive: true });
-    window.addEventListener('pointerdown', function (e) { disturb(e.clientX, e.clientY, 3, 60); }, { passive: true });
+    window.addEventListener('pointerdown', function (e) { disturb(e.clientX, e.clientY, 2, 14); }, { passive: true });
   }
 
   // Scroll progress line.
