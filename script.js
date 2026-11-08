@@ -71,51 +71,99 @@
     });
   }
 
-  // Ripples on the background: moving the mouse leaves soft rings that grow and fade, like water.
-  // A click makes a bigger one. Desktop only, skipped for reduced motion. The loop sleeps when idle.
+  // Water background: the page sits on a dot grid that behaves like a water surface. The mouse moves
+  // through it like a fish, leaving a wake that spreads and settles; a click drops a stone.
+  // Small wave simulation on the grid nodes (two height buffers + damping). Desktop only, skipped
+  // for reduced motion, and the loop sleeps once the water is calm.
   var fx = document.querySelector('.bg-fx');
   if (fx && fx.getContext && window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
     var ctx = fx.getContext('2d');
-    var ripples = [], lastX = -999, lastY = -999, raf = 0, dpr = 1, color = '#047857';
+    var GAP = 24, DAMP = 0.955, PUSH = 7;
+    var cols = 0, rows = 0, cur = null, prev = null, raf = 0, dpr = 1, dotColor = '', waveColor = '';
+    var lastX = null, lastY = null;
+    root.classList.add('has-water');
+
+    var readColors = function () {
+      var cs = getComputedStyle(root);
+      dotColor = cs.getPropertyValue('--line').trim() || '#d9d4c7';
+      waveColor = cs.getPropertyValue('--accent').trim() || '#047857';
+    };
     var resize = function () {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       fx.width = innerWidth * dpr; fx.height = innerHeight * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cols = Math.ceil(innerWidth / GAP) + 2; rows = Math.ceil(innerHeight / GAP) + 2;
+      cur = new Float32Array(cols * rows); prev = new Float32Array(cols * rows);
+      render();
     };
-    var readColor = function () { color = getComputedStyle(root).getPropertyValue('--accent').trim() || color; };
-    resize(); readColor();
-    window.addEventListener('resize', resize);
-    new MutationObserver(readColor).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-
-    var add = function (x, y, size) {
-      ripples.push({ x: x, y: y, t: performance.now(), max: size, life: size > 100 ? 1400 : 1000 });
-      if (ripples.length > 40) ripples.shift();
-      if (!raf) raf = requestAnimationFrame(draw);
-    };
-    var draw = function (now) {
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
-      ctx.strokeStyle = color;
-      ripples = ripples.filter(function (r) { return now - r.t < r.life; });
-      ripples.forEach(function (r) {
-        var p = (now - r.t) / r.life;              // 0 → 1
-        var ease = 1 - Math.pow(1 - p, 3);          // fast start, slow end
-        var fade = (1 - p) * 0.35;
-        for (var k = 0; k < 2; k++) {               // two rings per ripple, like water
-          var rad = r.max * Math.max(0, ease - k * 0.18);
-          if (rad <= 0) continue;
-          ctx.globalAlpha = fade * (k ? 0.5 : 1);
-          ctx.lineWidth = 1.2;
-          ctx.beginPath(); ctx.arc(r.x, r.y, rad, 0, Math.PI * 2); ctx.stroke();
+    var disturb = function (x, y, radius, amount) {
+      var cx = Math.round(x / GAP), cy = Math.round(y / GAP);
+      for (var j = -radius; j <= radius; j++) {
+        for (var i = -radius; i <= radius; i++) {
+          var gx = cx + i, gy = cy + j;
+          if (gx < 1 || gy < 1 || gx >= cols - 1 || gy >= rows - 1) continue;
+          var d = Math.sqrt(i * i + j * j);
+          if (d > radius) continue;
+          cur[gy * cols + gx] += amount * (1 - d / (radius + 1));
         }
-      });
-      ctx.globalAlpha = 1;
-      raf = ripples.length ? requestAnimationFrame(draw) : 0;
+      }
+      if (!raf) raf = requestAnimationFrame(tick);
     };
+    var step = function () {
+      var energy = 0;
+      for (var y = 1; y < rows - 1; y++) {
+        for (var x = 1; x < cols - 1; x++) {
+          var k = y * cols + x;
+          var v = ((cur[k - 1] + cur[k + 1] + cur[k - cols] + cur[k + cols]) / 2 - prev[k]) * DAMP;
+          prev[k] = v;
+          energy += v < 0 ? -v : v;
+        }
+      }
+      var t = cur; cur = prev; prev = t;
+      return energy;
+    };
+    var render = function () {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      var calm = [], moving = [];
+      for (var y = 1; y < rows - 1; y++) {
+        for (var x = 1; x < cols - 1; x++) {
+          var k = y * cols + x, h = cur[k];
+          // The slope of the surface bends each dot, like light through water.
+          var px = x * GAP + (cur[k + 1] - cur[k - 1]) * 1.6;
+          var py = y * GAP + (cur[k + cols] - cur[k - cols]) * 1.6;
+          var a = h < 0 ? -h : h;
+          (a > 0.6 ? moving : calm).push(px, py, a);
+        }
+      }
+      ctx.fillStyle = dotColor; ctx.globalAlpha = 1;
+      ctx.beginPath();
+      for (var i = 0; i < calm.length; i += 3) { ctx.moveTo(calm[i] + 1.3, calm[i + 1]); ctx.arc(calm[i], calm[i + 1], 1.3, 0, 6.2832); }
+      ctx.fill();
+      ctx.fillStyle = waveColor;
+      for (var m = 0; m < moving.length; m += 3) {
+        var s = Math.min(moving[m + 2] / 14, 1);
+        ctx.globalAlpha = 0.25 + s * 0.6;
+        ctx.beginPath(); ctx.arc(moving[m], moving[m + 1], 1.3 + s * 1.6, 0, 6.2832); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    };
+    var tick = function () {
+      var energy = step();
+      render();
+      raf = energy > 0.5 ? requestAnimationFrame(tick) : 0;
+      if (!raf) { cur.fill(0); prev.fill(0); render(); }
+    };
+
+    readColors(); resize();
+    window.addEventListener('resize', resize);
+    new MutationObserver(function () { readColors(); render(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
     window.addEventListener('pointermove', function (e) {
-      var dx = e.clientX - lastX, dy = e.clientY - lastY;
-      if (dx * dx + dy * dy > 70 * 70) { lastX = e.clientX; lastY = e.clientY; add(lastX, lastY, 70); }
+      // Faster movement makes a bigger wake, like a fish swimming quicker.
+      var speed = lastX === null ? 0 : Math.min(Math.hypot(e.clientX - lastX, e.clientY - lastY), 60);
+      lastX = e.clientX; lastY = e.clientY;
+      disturb(e.clientX, e.clientY, 1, PUSH + speed * 0.35);
     }, { passive: true });
-    window.addEventListener('pointerdown', function (e) { add(e.clientX, e.clientY, 160); }, { passive: true });
+    window.addEventListener('pointerdown', function (e) { disturb(e.clientX, e.clientY, 3, 60); }, { passive: true });
   }
 
   // Scroll progress line.
