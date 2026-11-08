@@ -78,7 +78,7 @@
   var fx = document.querySelector('.bg-fx');
   if (fx && fx.getContext && window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
     var ctx = fx.getContext('2d');
-    var GAP = 24, DAMP = 0.975, C2 = 0.1, PUSH = 2.2;
+    var GAP = 24, DAMP = 0.98, C2 = 0.03, PUSH = 1.6;
     var cols = 0, rows = 0, cur = null, prev = null, raf = 0, dpr = 1, dotColor = '', waveColor = '';
     var lastX = null, lastY = null;
     root.classList.add('has-water');
@@ -134,7 +134,7 @@
           var px = x * GAP + (cur[k + 1] - cur[k - 1]) * 0.9;
           var py = y * GAP + (cur[k + cols] - cur[k - cols]) * 0.9;
           var a = h < 0 ? -h : h;
-          (a > 0.8 ? moving : calm).push(px, py, a);
+          (a > 0.6 ? moving : calm).push(px, py, a);
         }
       }
       ctx.fillStyle = dotColor; ctx.globalAlpha = 1;
@@ -152,7 +152,7 @@
     var tick = function () {
       var energy = step();
       render();
-      raf = energy > 0.8 ? requestAnimationFrame(tick) : 0;
+      raf = energy > 0.6 ? requestAnimationFrame(tick) : 0;
       if (!raf) { cur.fill(0); prev.fill(0); render(); }
     };
 
