@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://zakyprojects.github.io/</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://zakyprojects.github.io/finance-tracker/</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://zakyprojects.github.io/ora-frontened/</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://zakyprojects.github.io/weather/</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://zakyprojects.github.io/todo/</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://zakyprojects.github.io/Random-Password-Generator/</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://zakyprojects.github.io/quotes-generator/</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://zakyprojects.github.io/qr-code-generator/</loc><lastmod>2026-11-08</lastmod></url>
 </urlset>
